@@ -26,7 +26,7 @@ while cnt<=p.lifetime_thresh&&norm(p.target-state)>p.target_thresh%keep running 
     %%%%%%Experience replay%%%%%%%%%
     sD=size(D);
     if sD(1)<p.replaymemory
-        D=[D;[state(1) state(2) a reward reward2 next_state(1) next_state(2)]];
+        D=[D;[state(1) state(2) a reward next_state(1) next_state(2)]];
     else D=[];
     end
     sD=size(D);
@@ -35,7 +35,7 @@ while cnt<=p.lifetime_thresh&&norm(p.target-state)>p.target_thresh%keep running 
         for j=1:100%replay 100 transitions
         samp=D(randi(sD(1)),:);
         x=dqnstate([samp(1) samp(2)],samp(3),p);
-        [a_NN, Qmax_NN]=maxQ_NN([samp(6) samp(7)],w_copy,p);%[Qmax,a]=maxQ(w,state);
+        [a_NN, Qmax_NN]=maxQ_NN([samp(5) samp(6)],w_copy,p);%[Qmax,a]=maxQ(w,state);
         y=samp(4)+p.gamma*(Qmax_NN);%Q learning target
         [w,tr]=train(w,x,y);
         end
